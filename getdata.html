@@ -85,63 +85,60 @@
     </div>
 
     <script type='text/javascript'>
-            
-                try {   
-                    fetch(fetchurl+querystring)
-                    .then(response => {
-                        responsecopy = response.clone();
-                        if (!response.ok) {
-                        console.log(responsecopy.json());
-                        }
-                        return response.text();
-
-                    }).then(data =>{
-                        var employee_data = data.split(/\r?\n|\r/);
-                        var table_data = '<br><br><table class="center">';
-                        for(var count = 0; count<employee_data.length; count++)
-                        {
-                        var cell_data = employee_data[count].split("|");
-                        table_data += '<tr>';
-                        for(var cell_count=0; cell_count<cell_data.length; cell_count++)
-                        {
-                            if(count === 0)
-                            {
-                            table_data += '<th>'+cell_data[cell_count]+'</th>';
-                            }
-                            else
-                            {
-                            table_data += '<td>'+cell_data[cell_count]+'</td>';
-                            }
-                        }
-                        table_data += '</tr>';
-                        }
-                        table_data += '</table>';
-                        document.getElementById('apires').innerHTML=table_data;
-                        
-                    }).catch(error=>{
-                        console.log(error);
-                    });
+        try {   
+            fetch(fetchurl+querystring)
+            .then(response => {
+                responsecopy = response.clone();
+                if (!response.ok) {
+                console.log(responsecopy.json());
                 }
-                    catch (error) {
-                        
-                        console.log('Error');
-                        document.getElementById('apires').innerHTML=error;
+                return response.text();
+
+            }).then(data =>{
+                var employee_data = data.split(/\r?\n|\r/);
+                var table_data = '<br><br><center><table class="table">';
+                for(var count = 0; count<employee_data.length; count++)
+                {
+                var cell_data = employee_data[count].split("|");
+                table_data += '<tr>';
+                for(var cell_count=0; cell_count<cell_data.length; cell_count++)
+                {
+                    if(count === 0)
+                    {
+                    table_data += '<th>'+cell_data[cell_count]+'</th>';
                     }
-                    
-            
+                    else
+                    {
+                    table_data += '<td>'+cell_data[cell_count]+'</td>';
+                    }
+                }
+                table_data += '</tr>';
+                }
+                table_data += '</table></center>';
+                document.getElementById('apires').innerHTML=table_data;
+                
+            }).catch(error=>{
+                console.log(error);
+            });
+        }
+            catch (error) {
+                
+                console.log('Error');
+                document.getElementById('apires').innerHTML=error;
+            }
 
         </script>
 
     <footer>
         
         <div class="align--center bg--secondary-color pt3 pb3">
-            <p>Design with &#10084; by <a href="https://www.s3digital.in" class="link">s3Digital</a></p>
+            <h4>Design with &#10084; by <a href="https://www.s3digital.in" class="link">s3Digital</a></h4>
             <ul class="no-bullets list--inline mt1">
                 <li class="mr1"><a href="https://www.facebook.com" class="link"><img class="icon" src="img/facebook.svg" alt="Facebook"></a></li>
                 <li class="mr1"><a href="https://www.twitter.com" class="link"><img class="icon" src="img/twitter.svg" alt="Twitter"></a></li>
                 <li><a href="https://www.instagram.com" class="link"><img class="icon" src="img/instagram.svg" alt="Instagram"></a></li>
             </ul>
-            <p>&copy; s3Digital.in</p>
+            <h4>&copy; s3Digital.in</h4>
         </div>
     </footer>
 
