@@ -46,21 +46,9 @@
                 var data = { 'product': product, 'brand': brand};
                
             }
-            var responsedata ;
+            
             var querystring = encodeQueryData(data);
-            fetch(fetchurl+querystring)
-                    .then(response => {
-                        responsecopy = response.clone();
-                        if (!response.ok) {
-                        console.log(responsecopy.json());
-                        }
-                        responsedata = response.text();
-
-                    }).catch(error => {
-                            
-                            cbutton.disabled=false;
-                            console.log('enabled');
-                    });
+            
         </script>
 
         <!-- The compiled CSS file -->
@@ -79,9 +67,17 @@
            
             function showdata()
             {  
-               // document.getElementById('apires').innerHTML= '<br><center><img class="img-circle" src="img/loading.gif" alt="Loading" height="200px" width="200px" ></center>';
-                try {
-                        var employee_data = responsedata.split(/\r?\n|\r/);
+                try {   
+                    fetch(fetchurl+querystring)
+                    .then(response => {
+                        responsecopy = response.clone();
+                        if (!response.ok) {
+                        console.log(responsecopy.json());
+                        }
+                        return response.text();
+
+                    }).then(data =>{
+                        var employee_data = data.split(/\r?\n|\r/);
                         var table_data = '<br><br><table class="center">';
                         for(var count = 0; count<employee_data.length; count++)
                         {
@@ -103,7 +99,9 @@
                         table_data += '</table>';
                         document.getElementById('apires').innerHTML=table_data;
                         
-                    }
+                    }).catch(error=>{
+                        console.log(error);
+                    });
 
                     catch (error) {
                         
