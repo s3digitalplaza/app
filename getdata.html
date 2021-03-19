@@ -23,10 +23,10 @@
 
         <script>
             const fetchurl = 'https://z6frz47vyc.execute-api.ap-south-1.amazonaws.com/dev?';
-            const product = new URLSearchParams(window.location.search).get('product');
+            const category = new URLSearchParams(window.location.search).get('category');
             const brand = new URLSearchParams(window.location.search).get('brand');
-            const model = new URLSearchParams(window.location.search).get('model');
-
+            var data = {'page': 'Categories'};
+            var link = '?category=';
             function encodeQueryData(data) 
             {
                 const ret = [];
@@ -36,15 +36,15 @@
             }
             
             
-            if (product!=null && brand!=null && model!=null)
+            if (category!=null && brand!=null)
             {
-                var data = { 'product': product, 'brand': brand, 'model': model };
-               
+                data = { 'category': category, 'brand': brand };
+                
             }
-            else if (product!=null && brand!=null)
+            else if (category!=null)
             {
-                var data = { 'product': product, 'brand': brand};
-               
+                data = { 'category': category};
+                link = '?category='+category+'&brand=';
             }
             
             var querystring = encodeQueryData(data);
@@ -76,7 +76,7 @@
 
     <div class="container text-center">
 
-        <h2>Models</h2>
+        <h2 id="currentpage"></h2>
         <br>
         <br>
         <div class="container" id='apires'>
@@ -86,6 +86,8 @@
 
     <script type='text/javascript'>
         try {   
+            console.log(querystring);
+            document.getElementById('currentpage').innerHTML = Object.values(data).join(' - ');
             fetch(fetchurl+querystring)
             .then(response => {
                 responsecopy = response.clone();
@@ -94,8 +96,11 @@
                 }
                 return response.text();
 
-            }).then(data =>{
-                var employee_data = data.split(/\r?\n|\r/);
+            }).then(responsedata =>{
+                var employee_data = responsedata.split(/\r?\n|\r/);
+                if (Object.keys(data).length==2)
+                {
+
                 var table_data = '<br><br><center><table class="table">';
                 for(var count = 0; count<employee_data.length; count++)
                 {
@@ -117,6 +122,24 @@
                 table_data += '</table></center>';
                 document.getElementById('apires').innerHTML=table_data;
                 
+                }
+                else{
+                    
+                    var table_data = '';//'<br><br><center><table class="table">';
+                    for(var count = 1; count<employee_data.length; count++)
+                    {
+                    var cell_data = employee_data[count];
+                    console.log(cell_data);
+                    if (cell_data)
+                    {
+                    table_data += '<a href="'+link+cell_data+'"><button type="button" class="btn btn-primary btn-lg btn-block">'+cell_data+'</button></a><br><br>';
+                    }
+                    
+                    }
+                    //table_data += '</table></center>';
+                    document.getElementById('apires').innerHTML=table_data;
+                
+                }
             }).catch(error=>{
                 console.log(error);
             });
