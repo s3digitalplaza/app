@@ -25,6 +25,7 @@
             const fetchurl = 'https://z6frz47vyc.execute-api.ap-south-1.amazonaws.com/dev?';
             const category = new URLSearchParams(window.location.search).get('category');
             const brand = new URLSearchParams(window.location.search).get('brand');
+            const type = new URLSearchParams(window.location.search).get('type');
             var data = {'page': 'Categories'};
             var link = '?category=';
             function encodeQueryData(data) 
@@ -38,8 +39,14 @@
             
             if (category!=null && brand!=null)
             {
+                if (type!=null)
+                {
+                    data = { 'category': category, 'brand': brand, 'type': type };
+                }
+                else
+                {
                 data = { 'category': category, 'brand': brand };
-                
+                }
             }
             else if (category!=null)
             {
@@ -48,7 +55,10 @@
             }
             
             var querystring = encodeQueryData(data);
-            
+            if (type!=null)
+                { 
+                delete data['type'];
+                }
         </script>
 
         <!-- The compiled CSS file -->
@@ -98,7 +108,7 @@
 
             }).then(responsedata =>{
                 var employee_data = responsedata.split(/\r?\n|\r/);
-                if (Object.keys(data).length==2)
+                if (Object.keys(data).length>=2)
                 {
 
                 var table_data = '<br><br><center><table class="table table-bordered table-striped table-responsive">';
