@@ -39,14 +39,7 @@
             
             if (category!=null && brand!=null)
             {
-                if (type!=null)
-                {
-                    data = { 'category': category, 'brand': brand};
-                }
-                else
-                {
-                data = { 'category': category, 'brand': brand };
-                }
+                data = { 'category': category, 'brand': brand, 'type': 'm'};
             }
             else if (category!=null)
             {
@@ -55,7 +48,10 @@
             }
             
             var querystring = encodeQueryData(data);
-            
+            if (type!=null)
+                { 
+                delete data['type'];
+                }
         </script>
 
         <!-- The compiled CSS file -->
