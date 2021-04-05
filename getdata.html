@@ -25,6 +25,7 @@
             const fetchurl = 'https://z6frz47vyc.execute-api.ap-south-1.amazonaws.com/dev?';
             const category = new URLSearchParams(window.location.search).get('category');
             const brand = new URLSearchParams(window.location.search).get('brand');
+            const model = new URLSearchParams(window.location.search).get('model');
             
             var data = {'page': 'Categories'};
             var link = '?category=';
@@ -47,7 +48,11 @@
                 data = { 'category': category};
                 link = '?category='+category+'&brand=';
             }
-            
+            else if (category==null && brand==null && model!=null)
+            {
+                data = { 'model': model};
+                link = '?model='+model;
+            }
             var querystring = encodeQueryData(data);
             
         </script>
@@ -74,9 +79,23 @@
             <a href='getdata.html'><h1 title="s3Digital"><b>S3 DIGITAL PLAZA</b></h1></a>
         </div>
     </header>
-
+<script type='text/javascript'>
+        function getmodels()
+        {
+            var search_model = document.getElementById('search').value;
+            if (search_model)
+            {
+                window.location = '?model='+search_model;
+            } 
+        }
+</script>
     <div class="container text-center">
-
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="search" id="search">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit" onclick="getmodels()"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
         <h2 id="currentpage"></h2>
         <br>
         <br>
@@ -99,7 +118,7 @@
 
             }).then(responsedata =>{
                 var employee_data = responsedata.split(/\r?\n|\r/);
-                if (Object.keys(data).length>=2)
+                if ((Object.keys(data).length>=2) || 'model' in data)
                 {
 
                 var table_data = '<br><br><center><table class="table table-bordered table-striped table-responsive">';
